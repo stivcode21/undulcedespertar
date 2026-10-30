@@ -28,3 +28,20 @@ body { @apply font-sans text-gray-800 bg-white; }
 .card {
   @apply bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300;
 }
+
+/* Grids de productos: overflow visible para que el tilt 3D no se corte */
+.productos-grid {
+  overflow: visible !important;
+}
+
+/* En páginas de categoría con wrapper .producto-item — solo mouse */
+@media (hover: hover) and (pointer: fine) {
+  .producto-item:nth-child(odd) .product-card:hover {
+    transform: perspective(900px) rotateY(-5deg) rotateX(2deg) translateY(-8px);
+    box-shadow: 6px 16px 32px rgba(240, 53, 107, 0.15);
+  }
+  .producto-item:nth-child(even) .product-card:hover {
+    transform: perspective(900px) rotateY(5deg) rotateX(2deg) translateY(-8px);
+    box-shadow: -6px 16px 32px rgba(240, 53, 107, 0.15);
+  }
+}

@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProductCard from '../components/product/ProductCard.astro';
 import HeroSlider from '../components/home/HeroSlider';
+import Cinta from '../components/home/Cinta.astro';
+import ProductosRapidos from '../components/home/ProductosRapidos.astro';
+import { Award, Truck, Heart, Sparkles } from 'lucide-astro';
 import { todosLosProductos } from '../data/todos-productos';
 import categorias from '../data/categorias.json';
 
@@ -37,6 +40,12 @@ const schema = {
 
   <!-- ═══ SLIDER ═══ -->
   <HeroSlider client:load />
+
+  <!-- ═══ CINTA ANIMADA ═══ -->
+  <Cinta />
+
+  <!-- ═══ PRODUCTOS RÁPIDOS ═══ -->
+  <ProductosRapidos />
 
   <!-- ═══ HERO ═══ -->
   <section class="bg-gradient-to-br from-pink-50 via-white to-rose-50 overflow-hidden">
@@ -147,7 +156,7 @@ const schema = {
           Ver todos →
         </a>
       </div>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+      <div class="productos-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
         {destacados.map(p => (
           <ProductCard
             slug={p.slug}
@@ -203,16 +212,18 @@ const schema = {
         ¿Por qué elegirnos?
       </h2>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {[
-          { icon: '🏆', title: '+17 años', desc: 'de experiencia' },
-          { icon: '🚀', title: 'Entrega rápida', desc: 'a domicilio en Bogotá' },
-          { icon: '❤️', title: 'Hecho con amor', desc: 'cada detalle importa' },
-          { icon: '✨', title: 'Personalizado', desc: 'para tu ocasión' },
-        ].map(item => (
-          <div class="flex flex-col items-center gap-3 p-6 rounded-2xl bg-gray-50 hover:bg-primary-light transition-colors text-center">
-            <span class="text-4xl">{item.icon}</span>
-            <h3 class="font-bold text-gray-800">{item.title}</h3>
-            <p class="text-sm text-gray-500">{item.desc}</p>
+        {([
+          { Icon: Award,    title: '+17 años',       desc: 'de experiencia' },
+          { Icon: Truck,    title: 'Entrega rápida', desc: 'a domicilio en Bogotá' },
+          { Icon: Heart,    title: 'Hecho con amor', desc: 'cada detalle importa' },
+          { Icon: Sparkles, title: 'Personalizado',  desc: 'para tu ocasión' },
+        ] as const).map(({ Icon, title, desc }) => (
+          <div class="flex flex-col items-center gap-3 p-6 rounded-2xl bg-gray-50 hover:bg-primary-light transition-colors text-center group">
+            <div class="w-12 h-12 bg-primary/10 group-hover:bg-primary/20 rounded-2xl flex items-center justify-center transition-colors">
+              <Icon class="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-bold text-gray-800">{title}</h3>
+            <p class="text-sm text-gray-500">{desc}</p>
           </div>
         ))}
       </div>

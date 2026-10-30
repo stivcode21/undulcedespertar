@@ -1,0 +1,43 @@
+---
+const items = [
+  { icon: '🚀', text: 'Entrega a domicilio en Bogotá' },
+  { icon: '⭐', text: '+5.000 clientes felices' },
+  { icon: '🏆', text: 'Pioneros desde 2007' },
+  { icon: '🎀', text: 'Presentación especial incluida' },
+  { icon: '💳', text: 'Pago contra entrega' },
+  { icon: '📞', text: 'Atención personalizada' },
+  { icon: '🌸', text: 'Flores frescas garantizadas' },
+  { icon: '🎁', text: '+100 productos disponibles' },
+];
+
+// Duplicamos para el loop infinito
+const repeated = [...items, ...items];
+---
+
+<div class="bg-primary overflow-hidden py-2.5">
+  <div class="ticker-track flex gap-0 whitespace-nowrap">
+    {repeated.map(item => (
+      <span class="inline-flex items-center gap-2 px-6 text-white text-sm font-medium shrink-0">
+        <span class="text-base">{item.icon}</span>
+        <span>{item.text}</span>
+        <span class="text-pink-300 mx-2">•</span>
+      </span>
+    ))}
+  </div>
+</div>
+
+<style>
+  .ticker-track {
+    animation: ticker 30s linear infinite;
+    width: max-content;
+  }
+
+  .ticker-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>

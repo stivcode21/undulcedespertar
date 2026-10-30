@@ -18,8 +18,11 @@ const precioFormateado = new Intl.NumberFormat('es-CO', {
 const whatsappMsg = encodeURIComponent(`Hola! Me interesa: *${nombre}* (${precioFormateado}). ¿Está disponible?`);
 ---
 
-<article class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100">
-  <a href={`/producto/${slug}`} class="block overflow-hidden relative" style="padding-top: 100%;">
+<!-- overflow:visible en article para que el tilt no se corte -->
+<article class="product-card group bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100">
+
+  <!-- imagen con su propio overflow-hidden y border-radius -->
+  <a href={`/producto/${slug}`} class="block relative rounded-t-2xl overflow-hidden" style="padding-top: 100%;">
     <img
       src={imagen}
       alt={nombre}
@@ -57,3 +60,23 @@ const whatsappMsg = encodeURIComponent(`Hola! Me interesa: *${nombre}* (${precio
     </div>
   </div>
 </article>
+
+<style>
+  .product-card {
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+    will-change: transform;
+  }
+
+  /* Solo en dispositivos con mouse real — no afecta touch/mobile */
+  @media (hover: hover) and (pointer: fine) {
+    .product-card:nth-child(odd):hover {
+      transform: perspective(900px) rotateY(-5deg) rotateX(2deg) translateY(-8px);
+      box-shadow: 6px 16px 32px rgba(240, 53, 107, 0.15);
+    }
+    .product-card:nth-child(even):hover {
+      transform: perspective(900px) rotateY(5deg) rotateX(2deg) translateY(-8px);
+      box-shadow: -6px 16px 32px rgba(240, 53, 107, 0.15);
+    }
+  }
+</style>
