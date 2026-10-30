@@ -1,0 +1,222 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCard from '../components/product/ProductCard.astro';
+import HeroSlider from '../components/home/HeroSlider';
+import { todosLosProductos } from '../data/todos-productos';
+import categorias from '../data/categorias.json';
+
+const destacados = todosLosProductos.filter(p => p.destacado).slice(0, 8);
+
+const cats = [
+  { slug: 'desayunos', nombre: 'Desayuno Sorpresa', img: '/assets/images/DESAYUNO-CUMPLEANOS.jpg' },
+  { slug: 'anchetas',  nombre: 'Anchetas',           img: '/assets/images/ANCHETA-PREMIUM.jpg' },
+  { slug: 'flores',    nombre: 'Flores',              img: '/assets/images/BOUQUET-ROSAS.jpg' },
+  { slug: 'frutas',    nombre: 'Frutas',              img: '/assets/images/FRUTAS-CON-PELUCHE.jpg' },
+  { slug: 'onces',     nombre: 'Onces',               img: '/assets/images/DESAYUNO-EN-CAJA.jpg' },
+  { slug: 'corporativos', nombre: 'Corporativo',      img: '/assets/images/D.-CORPORATIVO.jpg' },
+  { slug: 'regalos',   nombre: 'Más Sorpresas',       img: '/assets/images/MUG-SORPRESA.jpg' },
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Un Dulce Despertar",
+  "description": "Desayunos sorpresa, anchetas y regalos especiales en Bogotá desde 2007",
+  "url": "https://undulcedespertar.co",
+  "telephone": "+573053693139",
+  "address": { "@type": "PostalAddress", "addressLocality": "Bogotá", "addressCountry": "CO" },
+  "foundingDate": "2007"
+};
+---
+
+<BaseLayout
+  title="Desayunos Sorpresa y Regalos en Bogotá"
+  description="Pioneros en desayunos sorpresa desde 2007. Anchetas, flores, frutas y regalos con entrega a domicilio en Bogotá."
+  schema={schema}
+>
+
+  <!-- ═══ SLIDER ═══ -->
+  <HeroSlider client:load />
+
+  <!-- ═══ HERO ═══ -->
+  <section class="bg-gradient-to-br from-pink-50 via-white to-rose-50 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
+
+      <div class="space-y-6">
+        <span class="inline-block bg-primary/10 text-primary text-xs font-bold px-4 py-1.5 rounded-full tracking-wide">
+          ✨ Pioneros desde 2007
+        </span>
+        <h1 class="font-display text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+          Regalos que hacen<br/>
+          <span class="text-primary">sonreír</span>
+        </h1>
+        <p class="text-gray-500 text-base leading-relaxed max-w-md">
+          Desayunos sorpresa, anchetas y regalos especiales con entrega a domicilio en Bogotá. ¡Creamos momentos inolvidables!
+        </p>
+
+        <div class="flex flex-wrap gap-3 pt-2">
+          <a
+            href="https://wa.me/573053693139?text=Hola!%20Quiero%20hacer%20un%20pedido"
+            target="_blank"
+            class="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-3 rounded-full transition-colors shadow-lg shadow-primary/30 text-sm"
+          >
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            Pedir por WhatsApp
+          </a>
+          <a href="/categorias/desayunos" class="border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold px-6 py-3 rounded-full transition-colors text-sm">
+            Ver catálogo
+          </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="flex flex-wrap gap-6 pt-4 border-t border-gray-100">
+          {[
+            { num: '+17', label: 'Años de experiencia' },
+            { num: '+5k', label: 'Clientes felices' },
+            { num: '100%', label: 'Hecho con amor' },
+          ].map(s => (
+            <div class="text-center">
+              <p class="font-bold text-xl text-primary">{s.num}</p>
+              <p class="text-xs text-gray-400">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Hero image -->
+      <div class="relative hidden md:flex justify-center items-center">
+        <div class="w-72 h-72 bg-primary/10 rounded-full absolute"></div>
+        <div class="w-40 h-40 bg-pink-100 rounded-full absolute bottom-4 right-4"></div>
+        <img
+          src="/assets/images/ANCHETA-PREMIUM.jpg"
+          alt="Regalos sorpresa Un Dulce Despertar"
+          class="relative z-10 w-[340px] h-[380px] object-cover rounded-3xl shadow-2xl"
+        />
+        <!-- Floating badge -->
+        <div class="absolute top-6 right-0 z-20 bg-white shadow-lg rounded-2xl px-4 py-3 text-center">
+          <p class="text-2xl font-bold text-primary">+103</p>
+          <p class="text-xs text-gray-500">Productos</p>
+        </div>
+        <div class="absolute bottom-8 left-0 z-20 bg-white shadow-lg rounded-2xl px-4 py-3 flex items-center gap-2">
+          <span class="text-2xl">⭐</span>
+          <div>
+            <p class="text-sm font-bold text-gray-800">4.9/5</p>
+            <p class="text-xs text-gray-400">Calificación</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CATEGORÍAS CIRCULARES ═══ -->
+  <section class="py-14 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="font-display text-2xl md:text-3xl font-bold text-gray-900 text-center mb-10">
+        Categorías de regalos
+      </h2>
+      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-4 md:gap-6">
+        {cats.map(cat => (
+          <a href={`/categorias/${cat.slug}`} class="flex flex-col items-center gap-3 group">
+            <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-primary transition-all duration-300 shadow-md">
+              <img
+                src={cat.img}
+                alt={cat.nombre}
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                onerror="this.parentElement.style.background='#FFF0F5'"
+              />
+            </div>
+            <span class="text-xs font-semibold text-gray-700 group-hover:text-primary transition-colors text-center leading-tight">
+              {cat.nombre}
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PRODUCTOS MÁS VENDIDOS ═══ -->
+  <section class="py-14 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-gray-900">
+          Productos más vendidos
+        </h2>
+        <a href="/categorias/regalos" class="text-primary text-sm font-semibold hover:underline hidden sm:block">
+          Ver todos →
+        </a>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+        {destacados.map(p => (
+          <ProductCard
+            slug={p.slug}
+            nombre={p.nombre}
+            precio={p.precio}
+            imagen={p.imagen}
+            descripcion={p.descripcion}
+          />
+        ))}
+      </div>
+      <div class="text-center mt-8 sm:hidden">
+        <a href="/categorias/regalos" class="btn-outline text-sm">Ver todos los productos</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ BANNER INFERIOR ═══ -->
+  <section class="py-16 relative overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="/assets/images/BANNER-navidad-web-2026.jpg" alt="" class="w-full h-full object-cover opacity-20"/>
+      <div class="absolute inset-0 bg-gradient-to-r from-primary to-pink-400"></div>
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
+      <div class="text-white space-y-4">
+        <h2 class="font-display text-3xl md:text-4xl font-bold">
+          Más que regalos,<br/>creamos momentos
+        </h2>
+        <p class="text-pink-100 leading-relaxed">
+          Cada detalle está pensado para hacer sentir especial a quien más quieres. Desde Bogotá con amor.
+        </p>
+        <a
+          href="https://wa.me/573053693139?text=Hola!%20Quiero%20hacer%20un%20pedido%20especial"
+          target="_blank"
+          class="inline-flex items-center gap-2 bg-white text-primary font-bold px-6 py-3 rounded-full hover:bg-pink-50 transition-colors shadow-lg"
+        >
+          Hacer mi pedido →
+        </a>
+      </div>
+      <div class="hidden md:flex justify-end">
+        <img
+          src="/assets/images/ANCHETA-BAR.jpg"
+          alt="Regalo especial"
+          class="w-72 h-64 object-cover rounded-3xl shadow-2xl"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ POR QUÉ ELEGIRNOS ═══ -->
+  <section class="py-14 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="font-display text-2xl md:text-3xl font-bold text-center text-gray-900 mb-10">
+        ¿Por qué elegirnos?
+      </h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {[
+          { icon: '🏆', title: '+17 años', desc: 'de experiencia' },
+          { icon: '🚀', title: 'Entrega rápida', desc: 'a domicilio en Bogotá' },
+          { icon: '❤️', title: 'Hecho con amor', desc: 'cada detalle importa' },
+          { icon: '✨', title: 'Personalizado', desc: 'para tu ocasión' },
+        ].map(item => (
+          <div class="flex flex-col items-center gap-3 p-6 rounded-2xl bg-gray-50 hover:bg-primary-light transition-colors text-center">
+            <span class="text-4xl">{item.icon}</span>
+            <h3 class="font-bold text-gray-800">{item.title}</h3>
+            <p class="text-sm text-gray-500">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

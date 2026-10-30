@@ -1,0 +1,163 @@
+---
+import { ShoppingBasket, Building2, Coffee, Flower2, Apple, Cookie, Gift, ChevronDown, Search, MessageCircle } from 'lucide-astro';
+import categorias from '../../data/categorias.json';
+
+const iconMap: Record<string, typeof ShoppingBasket> = {
+  anchetas:     ShoppingBasket,
+  corporativos: Building2,
+  desayunos:    Coffee,
+  flores:       Flower2,
+  frutas:       Apple,
+  onces:        Cookie,
+  regalos:      Gift,
+};
+---
+
+<header class="sticky top-0 z-50 bg-white shadow-sm">
+  <!-- Top bar -->
+  <div class="bg-primary text-white text-xs py-1.5 px-4 flex justify-between items-center">
+    <div class="flex items-center gap-4">
+      <span>📞 Bogotá: 305 3693139</span>
+      <span class="hidden sm:inline">📞 Miami: +1 954 7620304</span>
+    </div>
+    <span class="hidden md:flex items-center gap-1">
+      🚀 Entrega a domicilio en Bogotá
+    </span>
+    <a href="https://wa.me/573053693139" target="_blank" class="bg-white text-primary text-xs font-bold px-3 py-0.5 rounded-full hover:bg-pink-50 transition-colors">
+      Pedir ahora
+    </a>
+  </div>
+
+  <!-- Main navbar -->
+  <nav class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2 shrink-0">
+      <img
+        src="/assets/images/cropped-logo-e1726550977726.png"
+        alt="Un Dulce Despertar"
+        class="h-12 w-auto"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+      />
+      <span class="font-bold text-lg text-primary leading-tight hidden flex-col">
+        <span>Un Dulce</span><span>Despertar</span>
+      </span>
+    </a>
+
+    <!-- Desktop links -->
+    <ul class="hidden lg:flex items-center gap-5 text-sm font-medium text-gray-700 shrink-0">
+      <li><a href="/" class="hover:text-primary transition-colors">Inicio</a></li>
+
+      <!-- Categorías dropdown -->
+      <li class="relative group">
+        <button class="flex items-center gap-1 hover:text-primary transition-colors py-2">
+          Categorías
+          <ChevronDown class="w-3 h-3" />
+        </button>
+        <div class="absolute top-full left-0 mt-1 w-56 bg-white shadow-xl rounded-2xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-gray-100">
+          {categorias.categorias.map(cat => {
+            const Icon = iconMap[cat.slug];
+            return (
+              <a href={`/categorias/${cat.slug}`} class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-primary-light hover:text-primary transition-colors">
+                {Icon && <Icon class="w-4 h-4 text-primary" />}
+                <span>{cat.nombre}</span>
+              </a>
+            );
+          })}
+        </div>
+      </li>
+
+      <!-- Ocasión dropdown -->
+      <li class="relative group">
+        <button class="flex items-center gap-1 hover:text-primary transition-colors py-2">
+          Ocasión
+          <ChevronDown class="w-3 h-3" />
+        </button>
+        <div class="absolute top-full left-0 mt-1 w-48 bg-white shadow-xl rounded-2xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-gray-100">
+          {categorias.ocasiones.map(oc => (
+            <a href={`/ocasion/${oc.slug}`} class="block px-4 py-2.5 text-sm hover:bg-primary-light hover:text-primary transition-colors">
+              {oc.nombre}
+            </a>
+          ))}
+        </div>
+      </li>
+
+      <!-- Temporada dropdown -->
+      <li class="relative group">
+        <button class="flex items-center gap-1 hover:text-primary transition-colors py-2">
+          Temporada
+          <ChevronDown class="w-3 h-3" />
+        </button>
+        <div class="absolute top-full left-0 mt-1 w-48 bg-white shadow-xl rounded-2xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-gray-100">
+          {categorias.temporadas.map(temp => (
+            <a href={`/temporada/${temp.slug}`} class="block px-4 py-2.5 text-sm hover:bg-primary-light hover:text-primary transition-colors">
+              {temp.nombre}
+            </a>
+          ))}
+        </div>
+      </li>
+
+      <li><a href="/nosotros" class="hover:text-primary transition-colors">Nosotros</a></li>
+      <li><a href="/blog" class="hover:text-primary transition-colors">Blog</a></li>
+    </ul>
+
+    <!-- Search bar -->
+    <div class="flex-1 max-w-sm hidden md:block">
+      <div class="relative">
+        <input
+          type="search"
+          placeholder="Buscar regalos..."
+          class="w-full pl-4 pr-10 py-2 text-sm bg-gray-100 rounded-full border-0 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:bg-white transition-all"
+        />
+        <Search class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+      </div>
+    </div>
+
+    <!-- Right actions -->
+    <div class="flex items-center gap-3 ml-auto shrink-0">
+      <a
+        href="https://wa.me/573053693139"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hidden md:flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors"
+      >
+        <MessageCircle class="w-4 h-4" />
+        Pedir
+      </a>
+
+      <button id="menu-toggle" class="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-100 bg-white px-4 py-4 space-y-1">
+    <div class="relative mb-3">
+      <input type="search" placeholder="Buscar regalos..." class="w-full pl-4 pr-10 py-2.5 text-sm bg-gray-100 rounded-full border-0 focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+      <Search class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+    </div>
+    <a href="/" class="block text-sm font-medium py-2.5 px-3 rounded-xl hover:bg-primary-light hover:text-primary">Inicio</a>
+    {categorias.categorias.map(cat => {
+      const Icon = iconMap[cat.slug];
+      return (
+        <a href={`/categorias/${cat.slug}`} class="flex items-center gap-2 text-sm py-2.5 px-3 rounded-xl hover:bg-primary-light hover:text-primary">
+          {Icon && <Icon class="w-4 h-4 text-primary" />}
+          <span>{cat.nombre}</span>
+        </a>
+      );
+    })}
+    <a href="/nosotros" class="block text-sm py-2.5 px-3 rounded-xl hover:bg-primary-light hover:text-primary">Nosotros</a>
+    <a href="/blog" class="block text-sm py-2.5 px-3 rounded-xl hover:bg-primary-light hover:text-primary">Blog</a>
+    <a href="https://wa.me/573053693139" target="_blank" class="flex items-center justify-center gap-2 bg-primary text-white text-sm font-semibold px-4 py-3 rounded-full mt-3">
+      <MessageCircle class="w-4 h-4" /> Pedir por WhatsApp
+    </a>
+  </div>
+</header>
+
+<script>
+  document.getElementById('menu-toggle')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu')?.classList.toggle('hidden');
+  });
+</script>

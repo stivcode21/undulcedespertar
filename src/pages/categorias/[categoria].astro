@@ -1,0 +1,269 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductCard from '../../components/product/ProductCard.astro';
+import { ShoppingBasket, Building2, Coffee, Flower2, Apple, Cookie, Gift } from 'lucide-astro';
+import { porCategoria, todosLosProductos } from '../../data/todos-productos';
+import categorias from '../../data/categorias.json';
+
+const iconMap: Record<string, typeof ShoppingBasket> = {
+  anchetas:     ShoppingBasket,
+  corporativos: Building2,
+  desayunos:    Coffee,
+  flores:       Flower2,
+  frutas:       Apple,
+  onces:        Cookie,
+  regalos:      Gift,
+};
+
+export function getStaticPaths() {
+  return Object.keys(porCategoria).map(cat => ({ params: { categoria: cat } }));
+}
+
+const { categoria } = Astro.params;
+const productos = porCategoria[categoria] ?? [];
+
+const meta = categorias.categorias.find(c => c.slug === categoria);
+const titulo = meta?.nombre ?? categoria;
+const emoji = meta?.emoji ?? '🎁';
+const descripcionMeta = meta?.descripcion ?? `Productos de ${titulo} - Un Dulce Despertar`;
+
+const precioMin = Math.min(...productos.map(p => p.precio));
+const precioMax = Math.max(...productos.map(p => p.precio));
+
+const todasLasOcasiones = categorias.ocasiones;
+---
+
+<BaseLayout
+  title={titulo}
+  description={descripcionMeta}
+>
+  <!-- Breadcrumb -->
+  <div class="bg-gray-50 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-2 text-sm text-gray-500">
+      <a href="/" class="hover:text-primary transition-colors">Inicio</a>
+      <span>/</span>
+      <a href="/categorias/anchetas" class="hover:text-primary transition-colors">Categorías</a>
+      <span>/</span>
+      <span class="text-gray-800 font-medium">{titulo}</span>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 py-10">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="font-display text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-3">
+        <span>{emoji}</span> {titulo}
+      </h1>
+      <p class="text-gray-500 mt-2">{productos.length} productos disponibles</p>
+    </div>
+
+    <div class="flex gap-8">
+      <!-- ══ SIDEBAR FILTROS ══ -->
+      <aside class="hidden lg:block w-64 shrink-0">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 sticky top-24">
+
+          <div class="flex items-center justify-between mb-5">
+            <h2 class="font-semibold text-gray-800">Filtros</h2>
+            <button
+              id="limpiar-filtros"
+              class="text-xs text-primary hover:underline font-medium"
+            >
+              Limpiar todo
+            </button>
+          </div>
+
+          <!-- Categorías -->
+          <div class="mb-6">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Categorías</h3>
+            <ul class="space-y-1">
+              {categorias.categorias.map(cat => (
+                <li>
+                  {(() => {
+                    const Icon = iconMap[cat.slug];
+                    const isActive = cat.slug === categoria;
+                    return (
+                      <a
+                        href={`/categorias/${cat.slug}`}
+                        class={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-colors ${isActive ? 'bg-primary text-white font-semibold' : 'text-gray-600 hover:bg-primary-light hover:text-primary'}`}
+                      >
+                        {Icon && <Icon class={`w-4 h-4 ${isActive ? 'text-white' : 'text-primary'}`} />}
+                        <span>{cat.nombre}</span>
+                      </a>
+                    );
+                  })()}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Precio -->
+          <div class="mb-6">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Precio</h3>
+            <div class="space-y-2">
+              {[
+                { label: 'Menos de $80.000', min: 0, max: 80000 },
+                { label: '$80.000 - $150.000', min: 80000, max: 150000 },
+                { label: '$150.000 - $300.000', min: 150000, max: 300000 },
+                { label: 'Más de $300.000', min: 300000, max: Infinity },
+              ].map(rango => (
+                <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-primary">
+                  <input
+                    type="checkbox"
+                    class="precio-filtro accent-primary rounded"
+                    data-min={rango.min}
+                    data-max={rango.max}
+                  />
+                  <span>{rango.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <!-- Ocasión -->
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Ocasión</h3>
+            <div class="space-y-2">
+              {todasLasOcasiones.map(oc => (
+                <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-primary">
+                  <input
+                    type="checkbox"
+                    class="ocasion-filtro accent-primary rounded"
+                    data-ocasion={oc.slug}
+                  />
+                  <span>{oc.nombre}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ══ GRID PRODUCTOS ══ -->
+      <div class="flex-1">
+        <!-- Mobile filtros + ordenar -->
+        <div class="flex items-center justify-between mb-5 gap-3">
+          <button
+            id="toggle-filtros-mobile"
+            class="lg:hidden flex items-center gap-2 border border-gray-200 text-sm px-4 py-2 rounded-full hover:border-primary hover:text-primary transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/>
+            </svg>
+            Filtrar
+          </button>
+
+          <select
+            id="ordenar"
+            class="ml-auto border border-gray-200 text-sm px-3 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/30 bg-white"
+          >
+            <option value="default">Ordenar por</option>
+            <option value="precio-asc">Precio: menor a mayor</option>
+            <option value="precio-desc">Precio: mayor a menor</option>
+            <option value="nombre">Nombre A-Z</option>
+          </select>
+        </div>
+
+        <!-- Grid -->
+        <div
+          id="productos-grid"
+          class="grid grid-cols-2 md:grid-cols-3 gap-4"
+        >
+          {productos.map(p => (
+            <div
+              class="producto-item"
+              data-precio={p.precio}
+              data-ocasiones={p.ocasiones.join(',')}
+            >
+              <ProductCard
+                slug={p.slug}
+                nombre={p.nombre}
+                precio={p.precio}
+                imagen={p.imagen}
+                descripcion={p.descripcion}
+              />
+            </div>
+          ))}
+        </div>
+
+        <!-- Sin resultados -->
+        <div id="sin-resultados" class="hidden text-center py-16">
+          <p class="text-4xl mb-3">🔍</p>
+          <p class="text-gray-500 font-medium">No hay productos con esos filtros</p>
+          <button id="reset-filtros" class="mt-4 text-primary text-sm hover:underline">Limpiar filtros</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const items = document.querySelectorAll<HTMLElement>('.producto-item');
+  const sinResultados = document.getElementById('sin-resultados')!;
+  const grid = document.getElementById('productos-grid')!;
+  const ordenar = document.getElementById('ordenar') as HTMLSelectElement;
+  const precioFiltros = document.querySelectorAll<HTMLInputElement>('.precio-filtro');
+  const ocasionFiltros = document.querySelectorAll<HTMLInputElement>('.ocasion-filtro');
+
+  function filtrar() {
+    const preciosActivos = [...precioFiltros].filter(f => f.checked);
+    const ocasionesActivas = [...ocasionFiltros].filter(f => f.checked).map(f => f.dataset.ocasion!);
+
+    let visibles = 0;
+    items.forEach(item => {
+      const precio = Number(item.dataset.precio);
+      const ocas = item.dataset.ocasiones?.split(',') ?? [];
+
+      const pasaPrecio = preciosActivos.length === 0 || preciosActivos.some(f => {
+        const min = Number(f.dataset.min);
+        const max = Number(f.dataset.max);
+        return precio >= min && precio <= max;
+      });
+
+      const pasaOcasion = ocasionesActivas.length === 0 || ocasionesActivas.some(o => ocas.includes(o));
+
+      if (pasaPrecio && pasaOcasion) {
+        item.style.display = '';
+        visibles++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+
+    sinResultados.classList.toggle('hidden', visibles > 0);
+    grid.classList.toggle('hidden', visibles === 0);
+  }
+
+  function ordenarProductos() {
+    const valor = ordenar.value;
+    const arr = [...items];
+
+    arr.sort((a, b) => {
+      if (valor === 'precio-asc') return Number(a.dataset.precio) - Number(b.dataset.precio);
+      if (valor === 'precio-desc') return Number(b.dataset.precio) - Number(a.dataset.precio);
+      if (valor === 'nombre') {
+        const na = a.querySelector('h3')?.textContent ?? '';
+        const nb = b.querySelector('h3')?.textContent ?? '';
+        return na.localeCompare(nb);
+      }
+      return 0;
+    });
+
+    arr.forEach(item => grid.appendChild(item));
+  }
+
+  precioFiltros.forEach(f => f.addEventListener('change', filtrar));
+  ocasionFiltros.forEach(f => f.addEventListener('change', filtrar));
+  ordenar.addEventListener('change', ordenarProductos);
+
+  document.getElementById('limpiar-filtros')?.addEventListener('click', () => {
+    precioFiltros.forEach(f => f.checked = false);
+    ocasionFiltros.forEach(f => f.checked = false);
+    filtrar();
+  });
+
+  document.getElementById('reset-filtros')?.addEventListener('click', () => {
+    precioFiltros.forEach(f => f.checked = false);
+    ocasionFiltros.forEach(f => f.checked = false);
+    filtrar();
+  });
+</script>

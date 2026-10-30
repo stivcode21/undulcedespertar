@@ -1,0 +1,90 @@
+[
+  {
+    "slug": "ancheta-premium",
+    "nombre": "Ancheta Premium",
+    "precio": 209000,
+    "categoria": "anchetas",
+    "ocasiones": ["cumpleanos", "aniversario"],
+    "temporadas": [],
+    "descripcion": "Ancheta premium con productos seleccionados para sorprender en cualquier ocasión especial.",
+    "imagen": "/assets/images/ANCHETA-PREMIUM.jpg",
+    "destacado": true
+  },
+  {
+    "slug": "desayuno-cumpleanos",
+    "nombre": "Desayuno Cumpleaños",
+    "precio": 120000,
+    "categoria": "desayunos",
+    "ocasiones": ["cumpleanos"],
+    "temporadas": [],
+    "descripcion": "Desayuno sorpresa ideal para celebrar un cumpleaños con amor y detalle.",
+    "imagen": "/assets/images/DESAYUNO-CUMPLEANOS.jpg",
+    "destacado": true
+  },
+  {
+    "slug": "bouquet-rosas",
+    "nombre": "Bouquet de Rosas",
+    "precio": 95000,
+    "categoria": "flores",
+    "ocasiones": ["aniversario", "agradecimiento"],
+    "temporadas": ["san-valentin", "dia-de-la-mujer"],
+    "descripcion": "Hermoso bouquet de rosas frescas, perfecto para expresar amor y admiración.",
+    "imagen": "/assets/images/BOUQUET-ROSAS.jpg",
+    "destacado": true
+  },
+  {
+    "slug": "ancheta-corporativa-especial",
+    "nombre": "Ancheta Corporativa Especial",
+    "precio": 180000,
+    "categoria": "corporativos",
+    "ocasiones": ["agradecimiento"],
+    "temporadas": ["navidad"],
+    "descripcion": "Ancheta corporativa ideal para reconocer a tu equipo o clientes especiales.",
+    "imagen": "/assets/images/ANCHETA-CORPORATIVA-ESPECIAL-2.jpg",
+    "destacado": true
+  },
+  {
+    "slug": "ancheta-bar",
+    "nombre": "Ancheta Bar",
+    "precio": 175000,
+    "categoria": "anchetas",
+    "ocasiones": ["aniversario", "cumpleanos"],
+    "temporadas": [],
+    "descripcion": "Ancheta bar con licores y snacks gourmet para celebrar a lo grande.",
+    "imagen": "/assets/images/ANCHETA-BAR.jpg",
+    "destacado": true
+  },
+  {
+    "slug": "desayuno-amor",
+    "nombre": "Desayuno Amor",
+    "precio": 98000,
+    "categoria": "desayunos",
+    "ocasiones": ["aniversario"],
+    "temporadas": ["san-valentin", "dia-de-la-mujer"],
+    "descripcion": "Desayuno romántico perfecto para sorprender a esa persona especial.",
+    "imagen": "/assets/images/DESAYUNO-AMOR-1.jpg",
+    "destacado": true
+  },
+  {
+    "slug": "bouquet-rosas-con-trufas",
+    "nombre": "Bouquet Rosas con Trufas",
+    "precio": 125000,
+    "categoria": "flores",
+    "ocasiones": ["aniversario", "cumpleanos"],
+    "temporadas": ["san-valentin"],
+    "descripcion": "Elegante bouquet de rosas acompañado de deliciosas trufas de chocolate.",
+    "imagen": "/assets/images/BOUQUET-ROSAS-CON-TRUFAS.jpg",
+    "destacado": false
+  },
+  {
+    "slug": "caja-de-rosas",
+    "nombre": "Caja de Rosas",
+    "precio": 140000,
+    "categoria": "flores",
+    "ocasiones": ["aniversario"],
+    "temporadas": ["san-valentin", "dia-de-la-mujer"],
+    "descripcion": "Lujosa caja con rosas frescas seleccionadas para sorprender con elegancia.",
+    "imagen": "/assets/images/CAJA-DE-ROSAS.jpg",
+    "destacado": false
+  }
+]

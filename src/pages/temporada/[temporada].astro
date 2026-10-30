@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductCard from '../../components/product/ProductCard.astro';
+import { todosLosProductos } from '../../data/todos-productos';
+import categorias from '../../data/categorias.json';
+
+export function getStaticPaths() {
+  return categorias.temporadas.map(t => ({ params: { temporada: t.slug } }));
+}
+
+const { temporada } = Astro.params;
+const meta = categorias.temporadas.find(t => t.slug === temporada);
+const productos = todosLosProductos.filter(p => p.temporadas.includes(temporada));
+---
+
+<BaseLayout
+  title={`Regalos ${meta?.nombre ?? temporada}`}
+  description={`Regalos especiales para ${meta?.nombre}. Desayunos, anchetas, flores y más con entrega en Bogotá.`}
+>
+  <div class="bg-gray-50 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-2 text-sm text-gray-500">
+      <a href="/" class="hover:text-primary">Inicio</a>
+      <span>/</span>
+      <span class="text-gray-800 font-medium">Temporada: {meta?.nombre}</span>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 py-10">
+    <div class="mb-8">
+      <h1 class="font-display text-3xl md:text-4xl font-bold text-gray-900">
+        {meta?.nombre}
+      </h1>
+      <p class="text-gray-500 mt-2">{productos.length} productos disponibles</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {productos.map(p => (
+        <ProductCard slug={p.slug} nombre={p.nombre} precio={p.precio} imagen={p.imagen} descripcion={p.descripcion} />
+      ))}
+    </div>
+
+    {productos.length === 0 && (
+      <div class="text-center py-20">
+        <p class="text-5xl mb-4">🎄</p>
+        <p class="text-gray-500">Próximamente regalos para esta temporada.</p>
+        <a href="/" class="mt-4 inline-block text-primary hover:underline text-sm">Volver al inicio</a>
+      </div>
+    )}
+  </div>
+</BaseLayout>

@@ -1,0 +1,65 @@
+---
+import { SEO } from 'astro-seo';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  schema?: object;
+}
+
+const {
+  title,
+  description = 'Desayunos sorpresa, anchetas y regalos especiales en Bogotá. Entrega a domicilio. ¡Crea momentos inolvidables desde 2007!',
+  ogImage = '/og-default.jpg',
+  schema
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <SEO
+      title={title}
+      titleTemplate="%s | Un Dulce Despertar"
+      description={description}
+      openGraph={{
+        basic: {
+          title: `${title} | Un Dulce Despertar`,
+          type: 'website',
+          image: ogImage,
+        },
+        optional: {
+          description,
+          locale: 'es_CO',
+          siteName: 'Un Dulce Despertar',
+        },
+      }}
+      twitter={{
+        card: 'summary_large_image',
+      }}
+    />
+
+    {schema && (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    )}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <Navbar />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

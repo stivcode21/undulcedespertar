@@ -1,0 +1,27 @@
+{
+  "categorias": [
+    { "slug": "anchetas", "nombre": "Anchetas", "emoji": "🧺", "descripcion": "Anchetas y cestas de regalo para toda ocasión" },
+    { "slug": "corporativos", "nombre": "Corporativos", "emoji": "🏢", "descripcion": "Regalos empresariales para tu equipo y clientes" },
+    { "slug": "desayunos", "nombre": "Desayunos", "emoji": "🥐", "descripcion": "Desayunos sorpresa a domicilio en Bogotá" },
+    { "slug": "flores", "nombre": "Flores", "emoji": "🌸", "descripcion": "Arreglos florales y bouquets frescos" },
+    { "slug": "frutas", "nombre": "Frutas", "emoji": "🍓", "descripcion": "Cestas de frutas frescas y gourmet" },
+    { "slug": "onces", "nombre": "Onces", "emoji": "☕", "descripcion": "Onces y meriendas especiales para compartir" },
+    { "slug": "regalos", "nombre": "Regalos", "emoji": "🎁", "descripcion": "Regalos especiales para cada momento" }
+  ],
+  "ocasiones": [
+    { "slug": "cumpleanos", "nombre": "Cumpleaños" },
+    { "slug": "aniversario", "nombre": "Aniversario" },
+    { "slug": "grado", "nombre": "Grado" },
+    { "slug": "agradecimiento", "nombre": "Agradecimiento" },
+    { "slug": "mejorate-pronto", "nombre": "Mejórate Pronto" }
+  ],
+  "temporadas": [
+    { "slug": "san-valentin", "nombre": "San Valentín" },
+    { "slug": "dia-de-la-mujer", "nombre": "Día de la Mujer" },
+    { "slug": "dia-de-la-madre", "nombre": "Día de la Madre" },
+    { "slug": "dia-del-padre", "nombre": "Día del Padre" },
+    { "slug": "amor-y-amistad", "nombre": "Amor y Amistad" },
+    { "slug": "halloween", "nombre": "Halloween" },
+    { "slug": "navidad", "nombre": "Navidad" }
+  ]
+}
