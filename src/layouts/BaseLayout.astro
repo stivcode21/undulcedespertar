@@ -2,6 +2,7 @@
 import { SEO } from 'astro-seo';
 import Navbar from '../components/layout/Navbar.astro';
 import Footer from '../components/layout/Footer.astro';
+import CarritoDrawer from '../components/carrito/CarritoDrawer';
 import '../styles/global.css';
 
 interface Props {
@@ -61,5 +62,6 @@ const {
       <slot />
     </main>
     <Footer />
+    <CarritoDrawer client:only="react" />
   </body>
 </html>

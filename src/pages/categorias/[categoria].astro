@@ -1,19 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/layout/Breadcrumb.astro';
 import ProductCard from '../../components/product/ProductCard.astro';
-import { ShoppingBasket, Building2, Coffee, Flower2, Apple, Cookie, Gift } from 'lucide-astro';
-import { porCategoria, todosLosProductos } from '../../data/todos-productos';
+import { Gift, SlidersHorizontal, SearchX, X } from 'lucide-astro';
+import { porCategoria } from '../../data/todos-productos';
+import { iconosCategoria } from '../../data/iconos-categorias';
 import categorias from '../../data/categorias.json';
-
-const iconMap: Record<string, typeof ShoppingBasket> = {
-  anchetas:     ShoppingBasket,
-  corporativos: Building2,
-  desayunos:    Coffee,
-  flores:       Flower2,
-  frutas:       Apple,
-  onces:        Cookie,
-  regalos:      Gift,
-};
 
 export function getStaticPaths() {
   return Object.keys(porCategoria).map(cat => ({ params: { categoria: cat } }));
@@ -24,11 +16,8 @@ const productos = porCategoria[categoria] ?? [];
 
 const meta = categorias.categorias.find(c => c.slug === categoria);
 const titulo = meta?.nombre ?? categoria;
-const emoji = meta?.emoji ?? '🎁';
+const IconoCategoria = iconosCategoria[categoria] ?? Gift;
 const descripcionMeta = meta?.descripcion ?? `Productos de ${titulo} - Un Dulce Despertar`;
-
-const precioMin = Math.min(...productos.map(p => p.precio));
-const precioMax = Math.max(...productos.map(p => p.precio));
 
 const todasLasOcasiones = categorias.ocasiones;
 ---
@@ -37,62 +26,65 @@ const todasLasOcasiones = categorias.ocasiones;
   title={titulo}
   description={descripcionMeta}
 >
-  <!-- Breadcrumb -->
-  <div class="bg-gray-50 border-b border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-2 text-sm text-gray-500">
-      <a href="/" class="hover:text-primary transition-colors">Inicio</a>
-      <span>/</span>
-      <a href="/categorias/anchetas" class="hover:text-primary transition-colors">Categorías</a>
-      <span>/</span>
-      <span class="text-gray-800 font-medium">{titulo}</span>
-    </div>
-  </div>
+  <Breadcrumb items={[{ label: titulo }]} />
 
-  <div class="max-w-7xl mx-auto px-4 py-10">
+  <div class="max-w-7xl mx-auto px-4 py-6 md:py-10">
     <!-- Header -->
-    <div class="mb-8">
+    <div class="mb-6 md:mb-8">
       <h1 class="font-display text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-3">
-        <span>{emoji}</span> {titulo}
+        <span class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-primary-light flex items-center justify-center shrink-0">
+          <IconoCategoria class="w-5 h-5 md:w-6 md:h-6 text-primary" />
+        </span>
+        {titulo}
       </h1>
-      <p class="text-gray-500 mt-2">{productos.length} productos disponibles</p>
+      <p class="text-gray-500 mt-2 text-sm md:text-base">{productos.length} productos disponibles</p>
     </div>
 
-    <div class="flex gap-8">
-      <!-- ══ SIDEBAR FILTROS ══ -->
-      <aside class="hidden lg:block w-64 shrink-0">
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 sticky top-24">
+    <div class="flex lg:gap-8">
+      <!-- Overlay del panel de filtros (solo mobile) -->
+      <div id="filtros-overlay" class="fixed inset-0 z-[60] bg-dark/50 opacity-0 pointer-events-none transition-opacity duration-300 lg:hidden"></div>
+
+      <!-- ══ SIDEBAR FILTROS ══ (mobile: panel lateral desde la izquierda; desktop: sidebar sticky) -->
+      <aside
+        id="filtros-panel"
+        class="fixed inset-y-0 left-0 z-[70] flex flex-col w-[85%] max-w-xs h-dvh bg-white shadow-2xl -translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] lg:static lg:z-auto lg:h-auto lg:w-64 lg:max-w-none lg:shrink-0 lg:bg-transparent lg:shadow-none lg:translate-x-0 lg:transition-none"
+      >
+        <div class="flex-1 overflow-y-auto overscroll-contain p-5 lg:flex-none lg:overflow-visible lg:bg-white lg:rounded-2xl lg:border lg:border-gray-100 lg:shadow-sm lg:sticky lg:top-32">
 
           <div class="flex items-center justify-between mb-5">
             <h2 class="font-semibold text-gray-800">Filtros</h2>
-            <button
-              id="limpiar-filtros"
-              class="text-xs text-primary hover:underline font-medium"
-            >
-              Limpiar todo
-            </button>
+            <div class="flex items-center gap-2">
+              <button
+                id="limpiar-filtros"
+                class="text-xs text-primary hover:underline font-medium"
+              >
+                Limpiar todo
+              </button>
+              <button data-cerrar-filtros aria-label="Cerrar filtros" class="lg:hidden p-2 -mr-2 rounded-full text-gray-500 hover:bg-gray-100 transition-colors">
+                <X class="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
           <!-- Categorías -->
           <div class="mb-6">
             <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Categorías</h3>
             <ul class="space-y-1">
-              {categorias.categorias.map(cat => (
-                <li>
-                  {(() => {
-                    const Icon = iconMap[cat.slug];
-                    const isActive = cat.slug === categoria;
-                    return (
-                      <a
-                        href={`/categorias/${cat.slug}`}
-                        class={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-colors ${isActive ? 'bg-primary text-white font-semibold' : 'text-gray-600 hover:bg-primary-light hover:text-primary'}`}
-                      >
-                        {Icon && <Icon class={`w-4 h-4 ${isActive ? 'text-white' : 'text-primary'}`} />}
-                        <span>{cat.nombre}</span>
-                      </a>
-                    );
-                  })()}
-                </li>
-              ))}
+              {categorias.categorias.map(cat => {
+                const Icon = iconosCategoria[cat.slug];
+                const isActive = cat.slug === categoria;
+                return (
+                  <li>
+                    <a
+                      href={`/categorias/${cat.slug}`}
+                      class={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-colors ${isActive ? 'bg-primary text-white font-semibold' : 'text-gray-600 hover:bg-primary-light hover:text-primary'}`}
+                    >
+                      {Icon && <Icon class={`w-4 h-4 ${isActive ? 'text-white' : 'text-primary'}`} />}
+                      <span>{cat.nombre}</span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -106,10 +98,10 @@ const todasLasOcasiones = categorias.ocasiones;
                 { label: '$150.000 - $300.000', min: 150000, max: 300000 },
                 { label: 'Más de $300.000', min: 300000, max: Infinity },
               ].map(rango => (
-                <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-primary">
+                <label class="flex items-center gap-2 py-0.5 text-sm text-gray-600 cursor-pointer hover:text-primary">
                   <input
                     type="checkbox"
-                    class="precio-filtro accent-primary rounded"
+                    class="precio-filtro accent-primary rounded w-4 h-4"
                     data-min={rango.min}
                     data-max={rango.max}
                   />
@@ -124,10 +116,10 @@ const todasLasOcasiones = categorias.ocasiones;
             <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Ocasión</h3>
             <div class="space-y-2">
               {todasLasOcasiones.map(oc => (
-                <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-primary">
+                <label class="flex items-center gap-2 py-0.5 text-sm text-gray-600 cursor-pointer hover:text-primary">
                   <input
                     type="checkbox"
-                    class="ocasion-filtro accent-primary rounded"
+                    class="ocasion-filtro accent-primary rounded w-4 h-4"
                     data-ocasion={oc.slug}
                   />
                   <span>{oc.nombre}</span>
@@ -136,19 +128,24 @@ const todasLasOcasiones = categorias.ocasiones;
             </div>
           </div>
         </div>
+
+        <!-- Footer del panel (solo mobile) -->
+        <div class="p-4 border-t border-gray-100 lg:hidden">
+          <button data-cerrar-filtros class="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-full transition-colors">
+            Ver <span id="contador-visibles">{productos.length}</span> productos
+          </button>
+        </div>
       </aside>
 
       <!-- ══ GRID PRODUCTOS ══ -->
-      <div class="flex-1">
+      <div class="flex-1 min-w-0">
         <!-- Mobile filtros + ordenar -->
         <div class="flex items-center justify-between mb-5 gap-3">
           <button
             id="toggle-filtros-mobile"
-            class="lg:hidden flex items-center gap-2 border border-gray-200 text-sm px-4 py-2 rounded-full hover:border-primary hover:text-primary transition-colors"
+            class="lg:hidden flex items-center gap-2 border border-gray-200 text-sm font-medium px-4 py-2 rounded-full hover:border-primary hover:text-primary transition-colors"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/>
-            </svg>
+            <SlidersHorizontal class="w-4 h-4" />
             Filtrar
           </button>
 
@@ -166,7 +163,7 @@ const todasLasOcasiones = categorias.ocasiones;
         <!-- Grid -->
         <div
           id="productos-grid"
-          class="productos-grid grid grid-cols-2 md:grid-cols-3 gap-4"
+          class="productos-grid grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5"
         >
           {productos.map(p => (
             <div
@@ -187,7 +184,9 @@ const todasLasOcasiones = categorias.ocasiones;
 
         <!-- Sin resultados -->
         <div id="sin-resultados" class="hidden text-center py-16">
-          <p class="text-4xl mb-3">🔍</p>
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-primary-light flex items-center justify-center">
+            <SearchX class="w-8 h-8 text-primary" />
+          </div>
           <p class="text-gray-500 font-medium">No hay productos con esos filtros</p>
           <button id="reset-filtros" class="mt-4 text-primary text-sm hover:underline">Limpiar filtros</button>
         </div>
@@ -203,6 +202,8 @@ const todasLasOcasiones = categorias.ocasiones;
   const ordenar = document.getElementById('ordenar') as HTMLSelectElement;
   const precioFiltros = document.querySelectorAll<HTMLInputElement>('.precio-filtro');
   const ocasionFiltros = document.querySelectorAll<HTMLInputElement>('.ocasion-filtro');
+  const contadorVisibles = document.getElementById('contador-visibles');
+  const ordenOriginal = [...items];
 
   function filtrar() {
     const preciosActivos = [...precioFiltros].filter(f => f.checked);
@@ -231,11 +232,12 @@ const todasLasOcasiones = categorias.ocasiones;
 
     sinResultados.classList.toggle('hidden', visibles > 0);
     grid.classList.toggle('hidden', visibles === 0);
+    if (contadorVisibles) contadorVisibles.textContent = String(visibles);
   }
 
   function ordenarProductos() {
     const valor = ordenar.value;
-    const arr = [...items];
+    const arr = [...ordenOriginal];
 
     arr.sort((a, b) => {
       if (valor === 'precio-asc') return Number(a.dataset.precio) - Number(b.dataset.precio);
@@ -251,19 +253,39 @@ const todasLasOcasiones = categorias.ocasiones;
     arr.forEach(item => grid.appendChild(item));
   }
 
+  function limpiarFiltros() {
+    precioFiltros.forEach(f => f.checked = false);
+    ocasionFiltros.forEach(f => f.checked = false);
+    filtrar();
+  }
+
   precioFiltros.forEach(f => f.addEventListener('change', filtrar));
   ocasionFiltros.forEach(f => f.addEventListener('change', filtrar));
   ordenar.addEventListener('change', ordenarProductos);
+  document.getElementById('limpiar-filtros')?.addEventListener('click', limpiarFiltros);
+  document.getElementById('reset-filtros')?.addEventListener('click', limpiarFiltros);
 
-  document.getElementById('limpiar-filtros')?.addEventListener('click', () => {
-    precioFiltros.forEach(f => f.checked = false);
-    ocasionFiltros.forEach(f => f.checked = false);
-    filtrar();
+  // ── Panel de filtros en mobile ──
+  const panelFiltros = document.getElementById('filtros-panel')!;
+  const overlayFiltros = document.getElementById('filtros-overlay')!;
+
+  function mostrarFiltros(abrir: boolean) {
+    const estaAbierto = !panelFiltros.classList.contains('-translate-x-full');
+    if (abrir === estaAbierto) return;
+    panelFiltros.classList.toggle('-translate-x-full', !abrir);
+    overlayFiltros.classList.toggle('opacity-0', !abrir);
+    overlayFiltros.classList.toggle('pointer-events-none', !abrir);
+    document.body.style.overflow = abrir ? 'hidden' : '';
+  }
+
+  document.getElementById('toggle-filtros-mobile')?.addEventListener('click', () => mostrarFiltros(true));
+  overlayFiltros.addEventListener('click', () => mostrarFiltros(false));
+  document.querySelectorAll('[data-cerrar-filtros]').forEach(b => b.addEventListener('click', () => mostrarFiltros(false)));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') mostrarFiltros(false);
   });
-
-  document.getElementById('reset-filtros')?.addEventListener('click', () => {
-    precioFiltros.forEach(f => f.checked = false);
-    ocasionFiltros.forEach(f => f.checked = false);
-    filtrar();
+  // Si se agranda la ventana a desktop con el panel abierto, se libera el scroll
+  matchMedia('(min-width: 1024px)').addEventListener('change', e => {
+    if (e.matches) mostrarFiltros(false);
   });
 </script>

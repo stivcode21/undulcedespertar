@@ -11,6 +11,12 @@
 
   --font-sans: 'Poppins', system-ui, sans-serif;
   --font-display: 'Poppins', system-ui, sans-serif;
+
+  --animate-pop: pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  @keyframes pop {
+    0%   { transform: scale(0.4); }
+    100% { transform: scale(1); }
+  }
 }
 
 html { scroll-behavior: smooth; }
@@ -44,4 +50,11 @@ body { @apply font-sans text-gray-800 bg-white; }
     transform: perspective(900px) rotateY(5deg) rotateX(2deg) translateY(-8px);
     box-shadow: -6px 16px 32px rgba(240, 53, 107, 0.15);
   }
+}
+
+/* Carruseles horizontales en mobile sin scrollbar visible */
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
 }

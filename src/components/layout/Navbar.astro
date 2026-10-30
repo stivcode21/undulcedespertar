@@ -1,41 +1,43 @@
 ---
-import { ShoppingBasket, Building2, Coffee, Flower2, Apple, Cookie, Gift, ChevronDown, Search, MessageCircle } from 'lucide-astro';
+import { ChevronDown, Search, MessageCircle, Phone, Truck, Menu, X, ShoppingCart } from 'lucide-astro';
+import CarritoBoton from '../carrito/CarritoBoton';
 import categorias from '../../data/categorias.json';
+import { iconosCategoria } from '../../data/iconos-categorias';
 
-const iconMap: Record<string, typeof ShoppingBasket> = {
-  anchetas:     ShoppingBasket,
-  corporativos: Building2,
-  desayunos:    Coffee,
-  flores:       Flower2,
-  frutas:       Apple,
-  onces:        Cookie,
-  regalos:      Gift,
-};
+const linkMobile = 'flex items-center gap-2 text-sm font-medium py-2.5 px-3 rounded-xl text-gray-700 hover:bg-primary-light hover:text-primary transition-colors';
+const sublinkMobile = 'flex items-center gap-2 text-sm py-2 px-3 rounded-xl text-gray-600 hover:bg-primary-light hover:text-primary transition-colors';
 ---
 
 <header class="sticky top-0 z-50 bg-white shadow-sm">
   <!-- Top bar -->
-  <div class="bg-primary text-white text-xs py-1.5 px-4 flex justify-between items-center">
-    <div class="flex items-center gap-4">
-      <span>📞 Bogotá: 305 3693139</span>
-      <span class="hidden sm:inline">📞 Miami: +1 954 7620304</span>
+  <div class="bg-primary text-white text-xs py-1.5">
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center gap-4">
+      <div class="flex items-center gap-4">
+        <a href="tel:+573053693139" class="flex items-center gap-1.5 hover:text-pink-100 transition-colors">
+          <Phone class="w-3.5 h-3.5" />
+          <span><span class="hidden sm:inline">Bogotá: </span>305 3693139</span>
+        </a>
+        <a href="tel:+19547620304" class="hidden sm:flex items-center gap-1.5 hover:text-pink-100 transition-colors">
+          <Phone class="w-3.5 h-3.5" />
+          <span>Miami: +1 954 7620304</span>
+        </a>
+      </div>
+      <span class="flex items-center gap-1.5">
+        <Truck class="w-3.5 h-3.5" />
+        <span class="sm:hidden">Domicilios en Bogotá</span>
+        <span class="hidden sm:inline">Entrega a domicilio en Bogotá</span>
+      </span>
     </div>
-    <span class="hidden md:flex items-center gap-1">
-      🚀 Entrega a domicilio en Bogotá
-    </span>
-    <a href="https://wa.me/573053693139" target="_blank" class="bg-white text-primary text-xs font-bold px-3 py-0.5 rounded-full hover:bg-pink-50 transition-colors">
-      Pedir ahora
-    </a>
   </div>
 
   <!-- Main navbar -->
-  <nav class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
+  <nav class="max-w-7xl mx-auto px-4 py-2 md:py-3 flex items-center gap-4">
     <!-- Logo -->
     <a href="/" class="flex items-center gap-2 shrink-0">
       <img
         src="/assets/images/cropped-logo-e1726550977726.png"
         alt="Un Dulce Despertar"
-        class="h-16 w-auto"
+        class="h-12 md:h-16 w-auto"
         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
       />
       <span class="font-bold text-lg text-primary leading-tight hidden flex-col">
@@ -55,7 +57,7 @@ const iconMap: Record<string, typeof ShoppingBasket> = {
         </button>
         <div class="absolute top-full left-0 mt-1 w-56 bg-white shadow-xl rounded-2xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-gray-100">
           {categorias.categorias.map(cat => {
-            const Icon = iconMap[cat.slug];
+            const Icon = iconosCategoria[cat.slug];
             return (
               <a href={`/categorias/${cat.slug}`} class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-primary-light hover:text-primary transition-colors">
                 {Icon && <Icon class="w-4 h-4 text-primary" />}
@@ -114,50 +116,99 @@ const iconMap: Record<string, typeof ShoppingBasket> = {
 
     <!-- Right actions -->
     <div class="flex items-center gap-3 ml-auto shrink-0">
-      <a
-        href="https://wa.me/573053693139"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="hidden md:flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors"
-      >
-        <MessageCircle class="w-4 h-4" />
-        Pedir
-      </a>
+      <!-- client:only: el contador sale de localStorage, no existe en el HTML estático -->
+      <CarritoBoton client:only="react">
+        <span slot="fallback" class="flex items-center gap-2 bg-primary text-white text-sm font-semibold pl-3.5 pr-4 py-2 rounded-full shadow-md shadow-primary/30">
+          <ShoppingCart class="w-5 h-5" />
+          <span>Carrito</span>
+        </span>
+      </CarritoBoton>
 
-      <button id="menu-toggle" class="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
+      <button
+        id="menu-toggle"
+        type="button"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="lg:hidden flex p-2 rounded-full text-gray-700 hover:bg-gray-100 transition-colors"
+      >
+        <Menu class="w-6 h-6 icono-abrir" />
+        <X class="w-6 h-6 icono-cerrar hidden" />
       </button>
     </div>
   </nav>
 
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-100 bg-white px-4 py-4 space-y-1">
-    <div class="relative mb-3">
-      <input type="search" placeholder="Buscar regalos..." class="w-full pl-4 pr-10 py-2.5 text-sm bg-gray-100 rounded-full border-0 focus:outline-none focus:ring-2 focus:ring-primary/30"/>
-      <Search class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+  <!-- Mobile menu: max-h + scroll propio porque el header es sticky -->
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-100 bg-white max-h-[calc(100dvh-6rem)] overflow-y-auto overscroll-contain">
+    <div class="px-4 py-4 space-y-1">
+      <div class="relative mb-3 md:hidden">
+        <input type="search" placeholder="Buscar regalos..." class="w-full pl-4 pr-10 py-2.5 text-sm bg-gray-100 rounded-full border-0 focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        <Search class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+      </div>
+
+      <a href="/" class={linkMobile}>Inicio</a>
+
+      <details class="group/acc">
+        <summary class={`${linkMobile} justify-between cursor-pointer list-none [&::-webkit-details-marker]:hidden`}>
+          Categorías
+          <ChevronDown class="w-4 h-4 transition-transform group-open/acc:rotate-180" />
+        </summary>
+        <div class="pl-3 pb-1">
+          {categorias.categorias.map(cat => {
+            const Icon = iconosCategoria[cat.slug];
+            return (
+              <a href={`/categorias/${cat.slug}`} class={sublinkMobile}>
+                {Icon && <Icon class="w-4 h-4 text-primary" />}
+                <span>{cat.nombre}</span>
+              </a>
+            );
+          })}
+        </div>
+      </details>
+
+      <details class="group/acc">
+        <summary class={`${linkMobile} justify-between cursor-pointer list-none [&::-webkit-details-marker]:hidden`}>
+          Ocasión
+          <ChevronDown class="w-4 h-4 transition-transform group-open/acc:rotate-180" />
+        </summary>
+        <div class="pl-3 pb-1">
+          {categorias.ocasiones.map(oc => (
+            <a href={`/ocasion/${oc.slug}`} class={sublinkMobile}>{oc.nombre}</a>
+          ))}
+        </div>
+      </details>
+
+      <details class="group/acc">
+        <summary class={`${linkMobile} justify-between cursor-pointer list-none [&::-webkit-details-marker]:hidden`}>
+          Temporada
+          <ChevronDown class="w-4 h-4 transition-transform group-open/acc:rotate-180" />
+        </summary>
+        <div class="pl-3 pb-1">
+          {categorias.temporadas.map(temp => (
+            <a href={`/temporada/${temp.slug}`} class={sublinkMobile}>{temp.nombre}</a>
+          ))}
+        </div>
+      </details>
+
+      <a href="/nosotros" class={linkMobile}>Nosotros</a>
+      <a href="/blog" class={linkMobile}>Blog</a>
+
+      <a href="https://wa.me/573053693139" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold px-4 py-3 rounded-full mt-3 transition-colors">
+        <MessageCircle class="w-4 h-4" /> Escríbenos por WhatsApp
+      </a>
     </div>
-    <a href="/" class="block text-sm font-medium py-2.5 px-3 rounded-xl hover:bg-primary-light hover:text-primary">Inicio</a>
-    {categorias.categorias.map(cat => {
-      const Icon = iconMap[cat.slug];
-      return (
-        <a href={`/categorias/${cat.slug}`} class="flex items-center gap-2 text-sm py-2.5 px-3 rounded-xl hover:bg-primary-light hover:text-primary">
-          {Icon && <Icon class="w-4 h-4 text-primary" />}
-          <span>{cat.nombre}</span>
-        </a>
-      );
-    })}
-    <a href="/nosotros" class="block text-sm py-2.5 px-3 rounded-xl hover:bg-primary-light hover:text-primary">Nosotros</a>
-    <a href="/blog" class="block text-sm py-2.5 px-3 rounded-xl hover:bg-primary-light hover:text-primary">Blog</a>
-    <a href="https://wa.me/573053693139" target="_blank" class="flex items-center justify-center gap-2 bg-primary text-white text-sm font-semibold px-4 py-3 rounded-full mt-3">
-      <MessageCircle class="w-4 h-4" /> Pedir por WhatsApp
-    </a>
   </div>
 </header>
 
 <script>
-  document.getElementById('menu-toggle')?.addEventListener('click', () => {
-    document.getElementById('mobile-menu')?.classList.toggle('hidden');
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  toggle?.addEventListener('click', () => {
+    const abierto = menu?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(abierto));
+    toggle.setAttribute('aria-label', abierto ? 'Cerrar menú' : 'Abrir menú');
+    toggle.querySelector('.icono-abrir')?.classList.toggle('hidden', abierto);
+    toggle.querySelector('.icono-cerrar')?.classList.toggle('hidden', !abierto);
   });
 </script>

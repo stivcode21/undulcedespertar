@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/layout/Breadcrumb.astro';
 import ProductCard from '../../components/product/ProductCard.astro';
+import { CalendarHeart } from 'lucide-astro';
 import { todosLosProductos } from '../../data/todos-productos';
 import categorias from '../../data/categorias.json';
 
@@ -17,23 +19,17 @@ const productos = todosLosProductos.filter(p => p.temporadas.includes(temporada)
   title={`Regalos ${meta?.nombre ?? temporada}`}
   description={`Regalos especiales para ${meta?.nombre}. Desayunos, anchetas, flores y más con entrega en Bogotá.`}
 >
-  <div class="bg-gray-50 border-b border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-2 text-sm text-gray-500">
-      <a href="/" class="hover:text-primary">Inicio</a>
-      <span>/</span>
-      <span class="text-gray-800 font-medium">Temporada: {meta?.nombre}</span>
-    </div>
-  </div>
+  <Breadcrumb items={[{ label: `Temporada: ${meta?.nombre}` }]} />
 
-  <div class="max-w-7xl mx-auto px-4 py-10">
-    <div class="mb-8">
+  <div class="max-w-7xl mx-auto px-4 py-6 md:py-10">
+    <div class="mb-6 md:mb-8">
       <h1 class="font-display text-3xl md:text-4xl font-bold text-gray-900">
         {meta?.nombre}
       </h1>
-      <p class="text-gray-500 mt-2">{productos.length} productos disponibles</p>
+      <p class="text-gray-500 mt-2 text-sm md:text-base">{productos.length} productos disponibles</p>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div class="productos-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
       {productos.map(p => (
         <ProductCard slug={p.slug} nombre={p.nombre} precio={p.precio} imagen={p.imagen} descripcion={p.descripcion} />
       ))}
@@ -41,7 +37,9 @@ const productos = todosLosProductos.filter(p => p.temporadas.includes(temporada)
 
     {productos.length === 0 && (
       <div class="text-center py-20">
-        <p class="text-5xl mb-4">🎄</p>
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-primary-light flex items-center justify-center">
+          <CalendarHeart class="w-8 h-8 text-primary" />
+        </div>
         <p class="text-gray-500">Próximamente regalos para esta temporada.</p>
         <a href="/" class="mt-4 inline-block text-primary hover:underline text-sm">Volver al inicio</a>
       </div>

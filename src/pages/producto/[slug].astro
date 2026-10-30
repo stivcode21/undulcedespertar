@@ -1,7 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/layout/Breadcrumb.astro';
 import ProductCard from '../../components/product/ProductCard.astro';
+import AgregarAlCarrito from '../../components/carrito/AgregarAlCarrito';
+import { Star, Truck, Gift, Banknote } from 'lucide-astro';
 import { todosLosProductos, porCategoria } from '../../data/todos-productos';
+import { iconosCategoria } from '../../data/iconos-categorias';
+import { formatPrecio } from '../../lib/formato';
 import categorias from '../../data/categorias.json';
 
 export function getStaticPaths() {
@@ -13,15 +18,7 @@ const producto = todosLosProductos.find(p => p.slug === slug);
 
 if (!producto) return Astro.redirect('/404');
 
-const precioFormateado = new Intl.NumberFormat('es-CO', {
-  style: 'currency',
-  currency: 'COP',
-  minimumFractionDigits: 0,
-}).format(producto.precio);
-
-const whatsappMsg = encodeURIComponent(
-  `Hola! Me interesa el producto: *${producto.nombre}* (${precioFormateado}). ¿Está disponible para entrega en Bogotá?`
-);
+const precioFormateado = formatPrecio(producto.precio);
 
 // Relacionados: misma categoría, excluyendo este
 const relacionados = (porCategoria[producto.categoria ?? ''] ?? [])
@@ -29,6 +26,7 @@ const relacionados = (porCategoria[producto.categoria ?? ''] ?? [])
   .slice(0, 4);
 
 const categoriaMeta = categorias.categorias.find(c => c.slug === producto.categoria);
+const IconoCategoria = iconosCategoria[producto.categoria ?? ''];
 const ocasionesMeta = categorias.ocasiones.filter(o => producto.ocasiones.includes(o.slug));
 const temporadasMeta = categorias.temporadas.filter(t => producto.temporadas.includes(t.slug));
 
@@ -55,64 +53,55 @@ const schema = {
   ogImage={producto.imagen}
   schema={schema}
 >
-  <!-- Breadcrumb -->
-  <div class="bg-gray-50 border-b border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-2 text-sm text-gray-500 flex-wrap">
-      <a href="/" class="hover:text-primary transition-colors">Inicio</a>
-      <span>/</span>
-      {categoriaMeta && (
-        <>
-          <a href={`/categorias/${producto.categoria}`} class="hover:text-primary transition-colors">
-            {categoriaMeta.nombre}
-          </a>
-          <span>/</span>
-        </>
-      )}
-      <span class="text-gray-800 font-medium truncate max-w-[200px]">{producto.nombre}</span>
-    </div>
-  </div>
+  <Breadcrumb
+    items={[
+      ...(categoriaMeta ? [{ label: categoriaMeta.nombre, href: `/categorias/${producto.categoria}` }] : []),
+      { label: producto.nombre },
+    ]}
+  />
 
   <!-- ══ PRODUCTO PRINCIPAL ══ -->
-  <section class="max-w-7xl mx-auto px-4 py-10">
-    <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-start">
+  <section class="max-w-7xl mx-auto px-4 py-6 md:py-10">
+    <div class="grid md:grid-cols-2 gap-6 md:gap-10 lg:gap-16 items-start">
 
       <!-- Imagen -->
       <div class="relative">
-        <div class="aspect-square rounded-3xl overflow-hidden bg-gray-50 shadow-lg">
+        <div class="aspect-square rounded-3xl overflow-hidden bg-primary-light shadow-lg">
           <img
             src={producto.imagen}
             alt={producto.nombre}
             class="w-full h-full object-cover"
-            onerror="this.parentElement.style.background='#FFF0F5'; this.style.display='none'"
+            onerror="this.style.display='none'"
           />
         </div>
         {producto.destacado && (
-          <span class="absolute top-4 left-4 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
-            ⭐ Más vendido
+          <span class="absolute top-4 left-4 inline-flex items-center gap-1 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
+            <Star class="w-3.5 h-3.5 fill-white" />
+            Más vendido
           </span>
         )}
       </div>
 
       <!-- Info -->
-      <div class="space-y-6">
+      <div class="space-y-5 md:space-y-6">
         <!-- Categoría badge -->
         {categoriaMeta && (
           <a
             href={`/categorias/${producto.categoria}`}
             class="inline-flex items-center gap-1.5 bg-primary-light text-primary text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-primary hover:text-white transition-colors"
           >
-            <span>{categoriaMeta.emoji}</span>
+            {IconoCategoria && <IconoCategoria class="w-3.5 h-3.5" />}
             <span>{categoriaMeta.nombre}</span>
           </a>
         )}
 
-        <h1 class="font-display text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+        <h1 class="font-display text-2xl md:text-4xl font-bold text-gray-900 leading-tight">
           {producto.nombre}
         </h1>
 
-        <p class="text-4xl font-bold text-primary">{precioFormateado}</p>
+        <p class="text-3xl md:text-4xl font-bold text-primary">{precioFormateado}</p>
 
-        <p class="text-gray-600 leading-relaxed text-base">{producto.descripcion}</p>
+        <p class="text-gray-600 leading-relaxed text-sm md:text-base">{producto.descripcion}</p>
 
         <!-- Tags ocasiones -->
         {ocasionesMeta.length > 0 && (
@@ -145,30 +134,25 @@ const schema = {
         )}
 
         <!-- Separador -->
-        <div class="border-t border-gray-100 pt-6 space-y-4">
-          <!-- CTA principal WhatsApp -->
-          <a
-            href={`https://wa.me/573053693139?text=${whatsappMsg}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="flex items-center justify-center gap-3 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl transition-colors shadow-lg shadow-green-200 text-base"
-          >
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-            Pedir por WhatsApp
-          </a>
+        <!-- flex+gap en vez de space-y: el astro-island del CTA es display:contents y no recibe margen -->
+        <div class="border-t border-gray-100 pt-6 flex flex-col gap-4">
+          <!-- CTA principal: carrito -->
+          <AgregarAlCarrito
+            client:load
+            conCantidad
+            producto={{ slug: producto.slug, nombre: producto.nombre, precio: producto.precio, imagen: producto.imagen }}
+          />
 
           <!-- Info entrega -->
           <div class="grid grid-cols-3 gap-3">
             {[
-              { icon: '🚀', text: 'Entrega en Bogotá' },
-              { icon: '🎀', text: 'Presentación especial' },
-              { icon: '💳', text: 'Pago contra entrega' },
-            ].map(item => (
-              <div class="flex flex-col items-center gap-1 bg-gray-50 rounded-xl p-3 text-center">
-                <span class="text-xl">{item.icon}</span>
-                <span class="text-xs text-gray-500 leading-tight">{item.text}</span>
+              { Icon: Truck,    text: 'Entrega en Bogotá' },
+              { Icon: Gift,     text: 'Presentación especial' },
+              { Icon: Banknote, text: 'Pago contra entrega' },
+            ].map(({ Icon, text }) => (
+              <div class="flex flex-col items-center gap-1.5 bg-gray-50 rounded-xl p-3 text-center">
+                <Icon class="w-5 h-5 text-primary" />
+                <span class="text-xs text-gray-500 leading-tight">{text}</span>
               </div>
             ))}
           </div>
@@ -179,12 +163,12 @@ const schema = {
 
   <!-- ══ PRODUCTOS RELACIONADOS ══ -->
   {relacionados.length > 0 && (
-    <section class="bg-gray-50 py-14">
+    <section class="bg-gray-50 py-10 md:py-14">
       <div class="max-w-7xl mx-auto px-4">
-        <h2 class="font-display text-2xl font-bold text-gray-900 mb-8">
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-gray-900 mb-6 md:mb-8">
           También te puede gustar
         </h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="productos-grid grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
           {relacionados.map(p => (
             <ProductCard
               slug={p.slug}

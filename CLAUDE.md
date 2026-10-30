@@ -11,6 +11,7 @@ Empresa colombiana de desayunos sorpresa, anchetas y regalos. Bogotá, desde 200
 | Estilos | Tailwind CSS v4 |
 | Componentes interactivos | React (Astro Islands con `client:load`) |
 | Slider | Swiper.js (componente React) |
+| Estado del carrito | Zustand + `persist` en localStorage (clave `udd-carrito`) |
 | Iconos | **lucide-astro** en archivos `.astro` / **lucide-react** en archivos `.tsx` |
 | SEO | astro-seo |
 | Sitemap | @astrojs/sitemap |
@@ -107,7 +108,7 @@ interface Producto {
 
 ## Patrones de Diseño a Seguir
 1. **Mobile-first** — diseñar primero para móvil, luego md/lg
-2. **Sin carrito todavía** — todo CTA dirige a WhatsApp con mensaje pre-cargado
+2. **Carrito** — `src/store/carrito.ts` (zustand). Las cards y la página de producto usan `AgregarAlCarrito` (React island); el drawer `CarritoDrawer` vive en BaseLayout con `client:only`. Los botones "Pagar en línea" y "Pagar por WhatsApp" del drawer aún no tienen acción
 3. **Datos estáticos en JSON** — no hay backend, todo se genera en build time
 4. **getStaticPaths()** para todas las rutas dinámicas
 5. **Productos relacionados** = misma categoría, excluye el actual, máximo 4

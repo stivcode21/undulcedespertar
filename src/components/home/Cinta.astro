@@ -1,13 +1,15 @@
 ---
+import { Truck, Star, Award, Gift, Banknote, Headset, Flower2, Package } from 'lucide-astro';
+
 const items = [
-  { icon: '🚀', text: 'Entrega a domicilio en Bogotá' },
-  { icon: '⭐', text: '+5.000 clientes felices' },
-  { icon: '🏆', text: 'Pioneros desde 2007' },
-  { icon: '🎀', text: 'Presentación especial incluida' },
-  { icon: '💳', text: 'Pago contra entrega' },
-  { icon: '📞', text: 'Atención personalizada' },
-  { icon: '🌸', text: 'Flores frescas garantizadas' },
-  { icon: '🎁', text: '+100 productos disponibles' },
+  { Icon: Truck,    text: 'Entrega a domicilio en Bogotá' },
+  { Icon: Star,     text: '+5.000 clientes felices' },
+  { Icon: Award,    text: 'Pioneros desde 2007' },
+  { Icon: Gift,     text: 'Presentación especial incluida' },
+  { Icon: Banknote, text: 'Pago contra entrega' },
+  { Icon: Headset,  text: 'Atención personalizada' },
+  { Icon: Flower2,  text: 'Flores frescas garantizadas' },
+  { Icon: Package,  text: '+100 productos disponibles' },
 ];
 
 // Duplicamos para el loop infinito
@@ -16,10 +18,10 @@ const repeated = [...items, ...items];
 
 <div class="bg-primary overflow-hidden py-2.5">
   <div class="ticker-track flex gap-0 whitespace-nowrap">
-    {repeated.map(item => (
-      <span class="inline-flex items-center gap-2 px-6 text-white text-sm font-medium shrink-0">
-        <span class="text-base">{item.icon}</span>
-        <span>{item.text}</span>
+    {repeated.map(({ Icon, text }) => (
+      <span class="inline-flex items-center gap-2 px-4 md:px-6 text-white text-xs md:text-sm font-medium shrink-0">
+        <Icon class="w-4 h-4 shrink-0" />
+        <span>{text}</span>
         <span class="text-pink-300 mx-2">•</span>
       </span>
     ))}

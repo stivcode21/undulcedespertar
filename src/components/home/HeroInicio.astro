@@ -1,0 +1,189 @@
+---
+import { Sparkles, Sparkle, ArrowRight, MapPin, Star } from 'lucide-astro';
+
+const stats = [
+  { valor: 'Desde 2007',  label: 'Creando momentos' },
+  { valor: '+5 mil',      label: 'Clientes felices' },
+  { valor: 'A tu medida', label: 'Detalles personalizados' },
+];
+
+const whatsappMsg = encodeURIComponent('Hola! Quiero asesoría para elegir un regalo');
+---
+
+<section class="relative overflow-hidden bg-gradient-to-br from-[#FFF6F9] via-white to-[#FDEAF2]">
+  <!-- Fondo: resplandor rosa a la derecha y ondas suaves abajo -->
+  <div aria-hidden="true" class="pointer-events-none absolute -right-48 top-1/2 -translate-y-1/2 w-[52rem] h-[52rem] rounded-full bg-[radial-gradient(circle,rgba(246,169,203,0.35)_0%,rgba(246,169,203,0)_65%)]"></div>
+  <svg aria-hidden="true" class="pointer-events-none absolute bottom-0 left-0 w-full h-20 md:h-28 text-[#FBDDEA]" viewBox="0 0 1440 120" preserveAspectRatio="none" fill="currentColor">
+    <path fill-opacity="0.45" d="M0,72 C240,32 480,112 720,78 C960,44 1200,104 1440,66 L1440,120 L0,120 Z" />
+    <path fill-opacity="0.35" d="M0,96 C300,64 560,120 860,94 C1120,72 1300,108 1440,92 L1440,120 L0,120 Z" />
+  </svg>
+
+  <div class="relative max-w-7xl mx-auto px-4 py-10 md:py-12 grid lg:grid-cols-[1.15fr_1fr] gap-8 lg:gap-6 items-center">
+
+    <!-- ══ Texto ══ -->
+    <div>
+      <span class="inline-flex items-center gap-1.5 bg-primary-light text-primary text-xs md:text-sm font-semibold px-4 py-1.5 rounded-full">
+        <Sparkles class="w-4 h-4" />
+        Pioneros desde 2007
+      </span>
+
+      <h1 class="mt-5 font-display text-[2.6rem] sm:text-5xl lg:text-[3.6rem] xl:text-[4rem] font-extrabold text-dark leading-[1.05] tracking-tight">
+        Regalos que <br class="hidden sm:block" />hacen
+        <span class="relative inline-block whitespace-nowrap text-primary">
+          sonreír
+          <!-- Subrayado a mano alzada + trazos de acento -->
+          <svg aria-hidden="true" class="absolute left-[4%] -bottom-[0.16em] w-[88%] h-[0.3em]" viewBox="0 0 200 24" preserveAspectRatio="none" fill="none">
+            <path d="M4 18 C 48 6, 120 2, 196 12" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+          </svg>
+          <svg aria-hidden="true" class="absolute -right-[0.42em] bottom-[0.12em] w-[0.34em] h-[0.34em]" viewBox="0 0 24 24" fill="none">
+            <path d="M4 10 L18 4" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+            <path d="M6 18 L20 13" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+          </svg>
+        </span>
+      </h1>
+
+      <p class="mt-5 text-gray-500 text-base md:text-lg leading-relaxed max-w-xl text-pretty">
+        Desayunos sorpresa, anchetas y regalos especiales. Sorprende a quien más quieres con entrega en Bogotá.
+      </p>
+
+      <!-- Mobile: botones apilados a ancho completo -->
+      <div class="mt-7 flex flex-col sm:flex-row sm:flex-wrap gap-3">
+        <a
+          href="#categorias"
+          class="group flex items-center justify-center gap-2 whitespace-nowrap bg-primary hover:bg-primary-dark text-white font-semibold px-7 py-3.5 rounded-full shadow-lg shadow-primary/30 transition-colors"
+        >
+          Explorar regalos
+          <ArrowRight class="w-5 h-5 transition-transform group-hover:translate-x-1" />
+        </a>
+        <a
+          href={`https://wa.me/573053693139?text=${whatsappMsg}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center justify-center gap-2.5 whitespace-nowrap bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 text-dark font-semibold px-7 py-3.5 rounded-full shadow-sm transition-colors"
+        >
+          <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          Asesoría por WhatsApp
+        </a>
+      </div>
+
+      <p class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+        <MapPin class="w-4 h-4 text-primary shrink-0" />
+        Entregas a domicilio en Bogotá
+      </p>
+
+      <dl class="mt-7 pt-6 border-t border-gray-200/80 grid grid-cols-3 divide-x divide-gray-200 max-w-2xl">
+        {stats.map(s => (
+          <div class="px-2.5 sm:px-5 first:pl-0 last:pr-0">
+            <dt class="sr-only">{s.label}</dt>
+            <dd class="font-display font-bold text-primary text-[15px] sm:text-xl leading-tight whitespace-nowrap">{s.valor}</dd>
+            <dd class="mt-0.5 text-xs sm:text-sm text-gray-500 leading-snug">{s.label}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <!-- ══ Visual: forma orgánica + producto + reseña ══ -->
+    <div class="flex justify-center lg:justify-end">
+      <div class="hero-visual w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[460px] xl:max-w-[490px]">
+        <div class="shape" aria-hidden="true"></div>
+
+        <picture class="contents">
+          <source
+            type="image/webp"
+            srcset="/assets/images/Ancheta-PREMIUMM-600.webp 600w, /assets/images/Ancheta-PREMIUMM-1100.webp 1100w"
+            sizes="(min-width: 1280px) 430px, (min-width: 1024px) 405px, (min-width: 640px) 370px, 300px"
+          />
+          <img
+            src="/assets/images/Ancheta-PREMIUMM.png"
+            alt="Ancheta premium en baúl de madera con tequila Herradura, chocolates Ferrero Rocher y moño navideño"
+            width="1254"
+            height="1254"
+            decoding="async"
+            class="producto"
+          />
+        </picture>
+
+        <!-- Destellos -->
+        <Sparkle aria-hidden="true" class="destello top-[16%] left-[6%] w-7 h-7 sm:w-9 sm:h-9" />
+        <Sparkle aria-hidden="true" class="destello top-[36%] right-[3%] w-5 h-5 sm:w-7 sm:h-7" />
+        <Sparkle aria-hidden="true" class="destello bottom-[30%] left-[2%] w-4 h-4 sm:w-6 sm:h-6" />
+
+        <!-- Tarjeta de calificación -->
+        <div class="absolute right-0 bottom-[6%] lg:-right-[4%] bg-white/95 backdrop-blur-sm rounded-2xl shadow-[0_18px_40px_-12px_rgba(28,28,46,0.25)] px-3.5 py-2.5 sm:px-4 sm:py-3">
+          <!-- Trazos de acento -->
+          <svg aria-hidden="true" class="absolute -top-4 -right-1 w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <path d="M6 14 L4 20" /><path d="M12 12 L14 4" /><path d="M17 16 L22 12" />
+          </svg>
+          <div class="flex items-center gap-2">
+            <div class="flex text-amber-400" aria-label="5 de 5 estrellas">
+              {[1, 2, 3, 4, 5].map(() => <Star class="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />)}
+            </div>
+            <span class="text-[10px] sm:text-xs font-semibold text-primary bg-primary-light px-2 py-0.5 rounded-full">4.9/5</span>
+          </div>
+          <p class="mt-1 text-xs sm:text-sm font-semibold text-dark leading-snug">Calificación de<br />nuestros clientes</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-visual {
+    position: relative;
+    isolation: isolate;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+  }
+
+  /* Forma rosada detrás del producto */
+  .shape {
+    position: absolute;
+    inset: 8% 3% 5%;
+    z-index: -1;
+    background:
+      radial-gradient(circle at 30% 25%, rgb(255 255 255 / 0.6), transparent 45%),
+      linear-gradient(135deg, #ffe6f0 0%, #f9bcd6 45%, #f392bf 100%);
+    border-radius: 42% 58% 65% 35% / 38% 42% 58% 62%;
+    transform: rotate(-12deg);
+    box-shadow: 0 30px 60px -24px rgb(240 53 107 / 0.35);
+    animation: blob 14s ease-in-out infinite alternate;
+  }
+
+  /* Contorno fino separado de la forma, levemente desfasado */
+  .shape::before {
+    content: "";
+    position: absolute;
+    inset: -14px;
+    border: 1px solid #f7bed7;
+    border-radius: inherit;
+    transform: rotate(7deg) scale(1.02);
+  }
+
+  /* El producto permanece derecho */
+  .producto {
+    width: 88%;
+    height: 92%;
+    object-fit: contain;
+    filter: drop-shadow(0 22px 18px rgb(100 35 65 / 16%));
+  }
+
+  .destello {
+    position: absolute;
+    color: #f52f72;
+    fill: currentColor;
+    pointer-events: none;
+  }
+
+  /* La forma "respira" muy suave; se desactiva si el usuario pide menos movimiento */
+  @keyframes blob {
+    0%   { border-radius: 42% 58% 65% 35% / 38% 42% 58% 62%; }
+    100% { border-radius: 55% 45% 52% 48% / 45% 55% 45% 55%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shape { animation: none; }
+  }
+</style>

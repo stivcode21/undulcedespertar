@@ -1,0 +1,101 @@
+---
+import { Gift, MapPin, MessageCircle, ArrowRight } from 'lucide-astro';
+
+const features = [
+  { Icon: Gift,          text: 'Hecho a tu medida' },
+  { Icon: MapPin,        text: 'Desde Bogotá' },
+  { Icon: MessageCircle, text: 'Atención por WhatsApp' },
+];
+
+const whatsappMsg = encodeURIComponent('Hola! Quiero personalizar un regalo');
+---
+
+<section class="relative overflow-hidden bg-gradient-to-br from-[#B3124B] via-primary to-[#FF5C9A] text-white">
+  <!-- Luces de fondo -->
+  <div aria-hidden="true" class="pointer-events-none absolute -top-40 -left-40 w-[28rem] h-[28rem] rounded-full bg-white/10 blur-3xl"></div>
+  <div aria-hidden="true" class="pointer-events-none absolute -bottom-48 right-0 w-[32rem] h-[32rem] rounded-full bg-[#FF8AB5]/30 blur-3xl"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 py-10 md:py-12 grid md:grid-cols-2 lg:grid-cols-[1.15fr_1fr] gap-6 lg:gap-10 items-center">
+
+    <!-- ══ Imagen ══ (mobile: arriba como gancho visual; desktop: derecha) -->
+    <div class="flex justify-center md:order-last">
+      <!-- lg:-my-6: la ancheta invade un poco el padding para no sumar altura a la sección -->
+      <div class="relative w-full max-w-[220px] sm:max-w-[260px] md:max-w-[320px] lg:max-w-[380px] xl:max-w-[420px] lg:-my-6">
+        <!-- Círculos decorativos detrás de la ancheta -->
+        <div aria-hidden="true" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[118%] aspect-square rounded-full border border-white/25"></div>
+        <div aria-hidden="true" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[92%] aspect-square rounded-full bg-white/15"></div>
+        <div aria-hidden="true" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full aspect-square rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.4)_0%,rgba(255,255,255,0)_62%)]"></div>
+        <!-- Sombra de piso -->
+        <div aria-hidden="true" class="absolute left-1/2 bottom-[4%] -translate-x-1/2 w-3/4 h-8 rounded-full bg-[#5A0022]/40 blur-2xl"></div>
+
+        <picture>
+          <source
+            type="image/webp"
+            srcset="/assets/images/ANCHETAbarPNG-600.webp 600w, /assets/images/ANCHETAbarPNG-1100.webp 1100w"
+            sizes="(min-width: 1280px) 420px, (min-width: 1024px) 380px, (min-width: 768px) 320px, (min-width: 640px) 260px, 220px"
+          />
+          <img
+            src="/assets/images/ANCHETAbarPNG.png"
+            alt="Ancheta en baúl de madera con licores, chocolates y pasabocas"
+            width="1254"
+            height="1254"
+            loading="lazy"
+            decoding="async"
+            class="relative w-full h-auto drop-shadow-[0_24px_28px_rgba(90,0,35,0.35)]"
+          />
+        </picture>
+      </div>
+    </div>
+
+    <!-- ══ Texto ══ (mobile: centrado; desktop: alineado a la izquierda como la referencia) -->
+    <div class="text-center md:text-left">
+      <span class="inline-block border border-white/40 bg-white/10 backdrop-blur-sm text-xs md:text-sm font-medium px-4 py-1.5 rounded-full">
+        Detalles hechos a tu medida
+      </span>
+
+      <h2 class="mt-4 font-display text-[2rem] sm:text-4xl lg:text-5xl xl:text-[3.25rem] font-extrabold leading-[1.08] tracking-tight text-balance">
+        Más que regalos, <br class="hidden md:block" />creamos momentos
+      </h2>
+
+      <p class="mt-3 text-white/85 text-sm sm:text-base lg:text-lg leading-relaxed text-pretty max-w-md lg:max-w-xl mx-auto md:mx-0">
+        Cada detalle está pensado para hacer sentir especial a quien más quieres. Desde Bogotá con amor.
+      </p>
+
+      <!-- Apilados a ancho completo en mobile y en tablet (columna angosta); en fila desde lg -->
+      <div class="mt-6 flex flex-col sm:flex-row md:flex-col lg:flex-row gap-3 sm:justify-center md:justify-start">
+        <a
+          href={`https://wa.me/573053693139?text=${whatsappMsg}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center justify-center gap-2.5 bg-green-500 hover:bg-green-600 text-white font-bold px-7 py-3 rounded-full shadow-lg shadow-[#5A0022]/25 transition-colors"
+        >
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          Personaliza tu regalo
+        </a>
+        <a
+          href="/categorias/regalos"
+          class="group flex items-center justify-center gap-2 border-2 border-white/70 hover:border-white hover:bg-white hover:text-primary text-white font-semibold px-7 py-3 rounded-full transition-colors"
+        >
+          Ver regalos
+          <ArrowRight class="w-4 h-4 transition-transform group-hover:translate-x-1" />
+        </a>
+      </div>
+
+      <div aria-hidden="true" class="mt-6 lg:mt-7 h-0.5 w-12 rounded-full bg-white/50 mx-auto md:mx-0"></div>
+
+      <!-- Hasta lg: 3 columnas con icono arriba; desde xl: fila con separadores como la referencia -->
+      <ul class="mt-4 grid grid-cols-3 gap-3 xl:flex xl:items-center xl:gap-0 xl:divide-x xl:divide-white/30">
+        {features.map(({ Icon, text }) => (
+          <li class="flex flex-col items-center gap-2 text-center xl:flex-row xl:gap-2.5 xl:text-left xl:px-5 xl:first:pl-0">
+            <span class="w-10 h-10 xl:w-auto xl:h-auto rounded-full bg-white/15 xl:bg-transparent flex items-center justify-center shrink-0">
+              <Icon class="w-5 h-5" />
+            </span>
+            <span class="text-[11px] sm:text-xs xl:text-sm text-white/90 leading-tight">{text}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
